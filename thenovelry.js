@@ -1,7 +1,5 @@
 <!-- All Carousel Global Code -->  
 
-<script>
-
 <!-- Hero Quote Carousel -->   
 
 const heroQuoteSwiper = new Swiper(".hero-quote-carousel", {
@@ -215,5 +213,3 @@ if (swiperEl) {
 
   observer.observe(swiperEl);
 }
-
-</script>
