@@ -782,9 +782,9 @@ if (novelsSwiperEl) {
 });
 
 // Autoplay only when in viewport
-let teamSwiperEl = document.querySelector(".team_swiper-wide");
+let teamSwiperWideEl = document.querySelector(".team_swiper-wide");
 
-if (teamSwiperEl) {
+if (teamSwiperWideEl) {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -800,10 +800,10 @@ if (teamSwiperEl) {
     }
   );
 
-  observer.observe(teamSwiperEl);
+  observer.observe(teamSwiperWideEl);
 
   // Stop autoplay initially if off-screen
-  const rect = teamSwiperEl.getBoundingClientRect();
+  const rect = teamSwiperWideEl.getBoundingClientRect();
   const inView =
     rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
   if (!inView) teamSwiperWide.autoplay.stop();
