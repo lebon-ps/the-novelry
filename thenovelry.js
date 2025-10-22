@@ -674,56 +674,92 @@ if (novelsSwiperEl) {
 
 <!-- Student Reviews -->
 
- const reviewsSwiper = new Swiper(".reviews_swiper", {
-    // Optional parameters
-    direction: "horizontal",
-    loop: false,
-    watchSlidesProgress: true,
-    slidesPerView: 1,
-    spaceBetween: 16,
-    threshold: 20,
-    centeredSlides: false,
-    mousewheel: {
-      forceToAxis: true
-    },
-    speed: 300,
-    // Responsive breakpoints
-    breakpoints: {
-      // when window width is >= 320px
-      320: {
-        slidesPerView: 1,
-				spaceBetween: 16,
-      },
-      // when window width is >= 580px
-      768: {
-        slidesPerView: 2,
-        spaceBetween: 16,
+const reviewsSwiper = new Swiper(".reviews_swiper", {
+  direction: "horizontal",
+  watchSlidesProgress: true,
+  slidesPerView: 1,
+  spaceBetween: 16,
+  threshold: 20,
+  centeredSlides: false,
+  speed: 300,
 
-      },
-      // when window width is >= 992px
-      992: {
-        slidesPerView: 2,
-        spaceBetween: 24,
+  // Autoplay configuration
+  autoplay: {
+    delay: 8000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
 
-      },
-      // when window width is >= 992px
-      1200: {
-        slidesPerView: 2,
-        spaceBetween: 32,
-      }
-    },
-    // Navigation arrows
-    navigation: {
-      nextEl: "#reviews_button-next",
-      prevEl: "#reviews_button-prev"
-    },
+  // Enable seamless autoplay without duplicating slides
+  rewind: true,
 
-    // And if we need scrollbar
-    scrollbar: {
-      el: "#reviews_scrollbar",
-      draggable: true
+  // Mousewheel configuration
+  mousewheel: {
+    forceToAxis: true,
+    releaseOnEdges: true
+  },
+
+  // Responsive breakpoints
+  breakpoints: {
+    320: {
+      slidesPerView: 1,
+      spaceBetween: 16
+    },
+    768: {
+      slidesPerView: 2,
+      spaceBetween: 16
+    },
+    992: {
+      slidesPerView: 2,
+      spaceBetween: 24
+    },
+    1200: {
+      slidesPerView: 2,
+      spaceBetween: 32
     }
-  });
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: "#reviews_button-next",
+    prevEl: "#reviews_button-prev"
+  },
+
+  // Scrollbar
+  scrollbar: {
+    el: "#reviews_scrollbar",
+    draggable: true
+  }
+});
+
+// Autoplay only when in viewport
+const reviewsSwiperEl = document.querySelector(".reviews_swiper");
+
+if (reviewsSwiperEl) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          reviewsSwiper.autoplay.start();
+        } else {
+          reviewsSwiper.autoplay.stop();
+        }
+      });
+    },
+    {
+      threshold: 0.3 // start autoplay when 30% visible
+    }
+  );
+
+  observer.observe(reviewsSwiperEl);
+
+  // Stop autoplay on load if it's initially off-screen
+  const rect = reviewsSwiperEl.getBoundingClientRect();
+  const inView =
+    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
+  if (!inView) reviewsSwiper.autoplay.stop();
+}
+	
 
   <!-- Team Swiper 2 -->
 
