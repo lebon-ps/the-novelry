@@ -213,3 +213,598 @@ if (swiperEl) {
 
   observer.observe(swiperEl);
 }
+
+<!-- Success Stories Carousel --> 
+
+const successSwiper = new Swiper(".success-stories_swiper", {
+  direction: "horizontal",
+  watchSlidesProgress: true,
+  slidesPerView: 1,
+  spaceBetween: 16,
+  threshold: 20,
+  centeredSlides: false,
+  speed: 300,
+
+  // Autoplay settings
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
+
+  // Prevents autoplay from stopping at the end
+  rewind: true,
+
+  // Responsive breakpoints
+  breakpoints: {
+    320: {
+      slidesPerView: 1,
+      spaceBetween: 16
+    },
+    480: {
+      slidesPerView: 2,
+      spaceBetween: 16
+    },
+    992: {
+      slidesPerView: 3,
+      spaceBetween: 24
+    },
+    1200: {
+      slidesPerView: 3,
+      spaceBetween: 32
+    }
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: "#success-stories_button-next",
+    prevEl: "#success-stories_button-prev"
+  },
+
+  // Scrollbar
+  scrollbar: {
+    el: "#success-stories_scrollbar",
+    draggable: true
+  }
+});
+
+// Autoplay only when in viewport
+const successSwiperEl = document.querySelector(".success-stories_swiper");
+
+if (successSwiperEl) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          successSwiper.autoplay.start();
+        } else {
+          successSwiper.autoplay.stop();
+        }
+      });
+    },
+    {
+      threshold: 0.3 // start when 30% visible
+    }
+  );
+
+  observer.observe(successSwiperEl);
+
+  // Stop autoplay on load if it's initially off-screen
+  const rect = successSwiperEl.getBoundingClientRect();
+  const inView =
+    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
+  if (!inView) successSwiper.autoplay.stop();
+}
+
+<!-- Agency Signings Carousel --> 
+
+const submissionsSwiper = new Swiper(".submissions_swiper", {
+  direction: "horizontal",
+  watchSlidesProgress: true,
+  slidesPerView: 1,
+  spaceBetween: 16,
+  threshold: 20,
+  centeredSlides: false,
+  speed: 300,
+
+  // Autoplay configuration
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
+
+  // Allow continuous autoplay without loop duplication
+  rewind: true,
+
+  // Keep mousewheel active without stalling autoplay
+  mousewheel: {
+    forceToAxis: true,
+    releaseOnEdges: true
+  },
+
+  // Responsive breakpoints
+  breakpoints: {
+    320: {
+      slidesPerView: 1,
+      spaceBetween: 16
+    },
+    480: {
+      slidesPerView: 2,
+      spaceBetween: 16
+    },
+    992: {
+      slidesPerView: 2,
+      spaceBetween: 24
+    },
+    1200: {
+      slidesPerView: 2,
+      spaceBetween: 32
+    }
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: "#submissions_button-next",
+    prevEl: "#submissions_button-prev"
+  },
+
+  // Scrollbar
+  scrollbar: {
+    el: "#submissions_scrollbar",
+    draggable: true
+  }
+});
+
+// Autoplay only when in viewport
+const submissionsSwiperEl = document.querySelector(".submissions_swiper");
+
+if (submissionsSwiperEl) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          submissionsSwiper.autoplay.start();
+        } else {
+          submissionsSwiper.autoplay.stop();
+        }
+      });
+    },
+    {
+      threshold: 0.3 // start autoplay when 30% visible
+    }
+  );
+
+  observer.observe(submissionsSwiperEl);
+
+  // Stop autoplay on load if it's initially off-screen
+  const rect = submissionsSwiperEl.getBoundingClientRect();
+  const inView =
+    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
+  if (!inView) submissionsSwiper.autoplay.stop();
+}
+
+<!-- Editor Carousel 2 (Team Preview) --> 
+
+// Move the editor controls into the slider container
+$("#editor-slider").append($("#editor-controls"));
+
+const editorSwiper = new Swiper(".editor-slider_swiper", {
+  direction: "horizontal",
+  watchSlidesProgress: true,
+  slidesPerView: 1,
+  spaceBetween: 32,
+  threshold: 20,
+  centeredSlides: false,
+  speed: 300,
+
+  // Autoplay configuration
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
+
+  // Allow continuous autoplay without loop duplication
+  rewind: true,
+
+  // Mousewheel settings that won’t block autoplay
+  mousewheel: {
+    forceToAxis: true,
+    releaseOnEdges: true
+  },
+
+  // Responsive breakpoints
+  breakpoints: {
+    320: {
+      slidesPerView: 1
+    },
+    580: {
+      slidesPerView: 2,
+      spaceBetween: 24
+    },
+    992: {
+      slidesPerView: 3,
+      spaceBetween: 32
+    },
+    1200: {
+      slidesPerView: 3
+    }
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: "#editor-slider_button-next",
+    prevEl: "#editor-slider_button-prev"
+  },
+
+  // Scrollbar
+  scrollbar: {
+    el: "#editor-slider_scrollbar",
+    draggable: true
+  }
+});
+
+// Autoplay only when in viewport
+const editorSwiperEl = document.querySelector(".editor-slider_swiper");
+
+if (editorSwiperEl) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          editorSwiper.autoplay.start();
+        } else {
+          editorSwiper.autoplay.stop();
+        }
+      });
+    },
+    {
+      threshold: 0.3 // start autoplay when 30% visible
+    }
+  );
+
+  observer.observe(editorSwiperEl);
+
+  // Stop autoplay on load if it's initially off-screen
+  const rect = editorSwiperEl.getBoundingClientRect();
+  const inView =
+    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
+  if (!inView) editorSwiper.autoplay.stop();
+}
+
+<!-- Upcoming Events --> 
+
+const eventsSwiper = new Swiper(".events_swiper", {
+  direction: "horizontal",
+  watchSlidesProgress: true,
+  slidesPerView: 1,
+  spaceBetween: 16,
+  threshold: 20,
+  centeredSlides: false,
+  speed: 300,
+
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
+
+  rewind: true,
+
+  mousewheel: {
+    forceToAxis: true,
+    releaseOnEdges: true
+  },
+
+  breakpoints: {
+    320:  { slidesPerView: 1, spaceBetween: 16 },
+    480:  { slidesPerView: 2, spaceBetween: 16 },
+    992:  { slidesPerView: 2, spaceBetween: 24 },
+    1200: { slidesPerView: 2, spaceBetween: 32 }
+  },
+
+  navigation: {
+    nextEl: "#events_button-next",
+    prevEl: "#events_button-prev"
+  },
+
+  scrollbar: {
+    el: "#events_scrollbar",
+    draggable: true
+  }
+});
+
+<!-- Past Events --> 
+
+const pasteventsSwiper = new Swiper(".past-events_swiper", {
+  direction: "horizontal",
+  watchSlidesProgress: true,
+  slidesPerView: 1,
+  spaceBetween: 16,
+  threshold: 20,
+  centeredSlides: false,
+  speed: 300,
+
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
+
+  rewind: true,
+
+  mousewheel: {
+    forceToAxis: true,
+    releaseOnEdges: true
+  },
+
+  breakpoints: {
+    320:  { slidesPerView: 1, spaceBetween: 16 },
+    480:  { slidesPerView: 2, spaceBetween: 16 },
+    992:  { slidesPerView: 2, spaceBetween: 24 },
+    1200: { slidesPerView: 2, spaceBetween: 32 }
+  },
+
+  navigation: {
+    nextEl: "#past-events_button-next",
+    prevEl: "#past-events_button-prev"
+  },
+
+  scrollbar: {
+    el: "#past-events_scrollbar",
+    draggable: true
+  }
+});
+
+// AUTOPLAY ON SECTION INTERSECTION
+function enableAutoplayOnView(swiperInstance, selector) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          swiperInstance.autoplay.start();
+        } else {
+          swiperInstance.autoplay.stop();
+        }
+      });
+    },
+    { threshold: 0.3 } // starts autoplay when 30% visible
+  );
+
+  observer.observe(el);
+
+  // Stop autoplay initially if off-screen
+  const rect = el.getBoundingClientRect();
+  const inView =
+    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
+  if (!inView) swiperInstance.autoplay.stop();
+}
+
+// Apply to both
+enableAutoplayOnView(eventsSwiper, ".events_swiper");
+enableAutoplayOnView(pasteventsSwiper, ".past-events_swiper");
+
+<!-- Novels Carousel --> 
+
+const novelsSwiper = new Swiper(".swiper-novels", {
+  direction: "horizontal",
+  watchSlidesProgress: true,
+  slidesPerView: 1,
+  spaceBetween: 24,
+  threshold: 20,
+  centeredSlides: false,
+  speed: 300,
+
+  // Autoplay configuration
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
+
+  // Allow continuous autoplay without duplicating slides
+  rewind: true,
+
+  // Mousewheel configuration
+  mousewheel: {
+    forceToAxis: true,
+    releaseOnEdges: true
+  },
+
+  // Responsive breakpoints
+  breakpoints: {
+    320: {
+      slidesPerView: 1
+    },
+    580: {
+      slidesPerView: 2
+    },
+    992: {
+      slidesPerView: 3
+    },
+    1200: {
+      slidesPerView: 3
+    }
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: "#novels_button-next",
+    prevEl: "#novels_button-prev"
+  },
+
+  // Scrollbar
+  scrollbar: {
+    el: "#novels_scrollbar",
+    draggable: true
+  }
+});
+
+// Autoplay only when in viewport
+const novelsSwiperEl = document.querySelector(".swiper-novels");
+
+if (novelsSwiperEl) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          novelsSwiper.autoplay.start();
+        } else {
+          novelsSwiper.autoplay.stop();
+        }
+      });
+    },
+    {
+      threshold: 0.3 // start autoplay when 30% visible
+    }
+  );
+
+  observer.observe(novelsSwiperEl);
+
+  // Stop autoplay on load if it's initially off-screen
+  const rect = novelsSwiperEl.getBoundingClientRect();
+  const inView =
+    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
+  if (!inView) novelsSwiper.autoplay.stop();
+}
+
+<!-- Student Reviews -->
+
+ const reviewsSwiper = new Swiper(".reviews_swiper", {
+    // Optional parameters
+    direction: "horizontal",
+    loop: false,
+    watchSlidesProgress: true,
+    slidesPerView: 1,
+    spaceBetween: 16,
+    threshold: 20,
+    centeredSlides: false,
+    mousewheel: {
+      forceToAxis: true
+    },
+    speed: 300,
+    // Responsive breakpoints
+    breakpoints: {
+      // when window width is >= 320px
+      320: {
+        slidesPerView: 1,
+				spaceBetween: 16,
+      },
+      // when window width is >= 580px
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 16,
+
+      },
+      // when window width is >= 992px
+      992: {
+        slidesPerView: 2,
+        spaceBetween: 24,
+
+      },
+      // when window width is >= 992px
+      1200: {
+        slidesPerView: 2,
+        spaceBetween: 32,
+      }
+    },
+    // Navigation arrows
+    navigation: {
+      nextEl: "#reviews_button-next",
+      prevEl: "#reviews_button-prev"
+    },
+
+    // And if we need scrollbar
+    scrollbar: {
+      el: "#reviews_scrollbar",
+      draggable: true
+    }
+  });
+
+  <!-- Team Swiper 2 -->
+
+  const teamSwiperWide = new Swiper(".team_swiper-wide", {
+  direction: "horizontal",
+  watchSlidesProgress: true,
+  slidesPerView: 1,
+  spaceBetween: 24,
+  threshold: 20,
+  centeredSlides: false,
+  speed: 300,
+
+  // Autoplay configuration
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
+
+  // Enable seamless autoplay without duplicating slides
+  rewind: true,
+
+  // Mousewheel settings
+  mousewheel: {
+    forceToAxis: true,
+    releaseOnEdges: true
+  },
+
+  // Responsive breakpoints
+  breakpoints: {
+    320: {
+      slidesPerView: 1
+    },
+    580: {
+      slidesPerView: 2
+    },
+    992: {
+      slidesPerView: 3
+    },
+    1200: {
+      slidesPerView: 4
+    }
+  },
+
+  // Navigation arrows
+  navigation: {
+    nextEl: "#team_swiper-wide_button-next",
+    prevEl: "#team_swiper-wide_button-prev"
+  },
+
+  // Scrollbar
+  scrollbar: {
+    el: "#team_swiper-wide_scrollbar",
+    draggable: true
+  }
+});
+
+// Autoplay only when in viewport
+const teamSwiperEl = document.querySelector(".team_swiper-wide");
+
+if (teamSwiperEl) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          teamSwiperWide.autoplay.start();
+        } else {
+          teamSwiperWide.autoplay.stop();
+        }
+      });
+    },
+    {
+      threshold: 0.3 // start autoplay when 30% visible
+    }
+  );
+
+  observer.observe(teamSwiperEl);
+
+  // Stop autoplay initially if off-screen
+  const rect = teamSwiperEl.getBoundingClientRect();
+  const inView =
+    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
+  if (!inView) teamSwiperWide.autoplay.stop();
+}
