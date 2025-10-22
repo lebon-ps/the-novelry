@@ -108,7 +108,7 @@ const teamprevSwiperWide = new Swiper(".team-prev_swiper-wide", {
 });
 
 // Autoplay only when in viewport
-const teamSwiperEl = document.querySelector(".team-prev_swiper-wide");
+let teamSwiperEl = document.querySelector(".team-prev_swiper-wide");
 
 if (teamSwiperEl) {
   const observer = new IntersectionObserver(
@@ -782,7 +782,7 @@ if (novelsSwiperEl) {
 });
 
 // Autoplay only when in viewport
-const teamSwiperEl = document.querySelector(".team_swiper-wide");
+let teamSwiperEl = document.querySelector(".team_swiper-wide");
 
 if (teamSwiperEl) {
   const observer = new IntersectionObserver(
