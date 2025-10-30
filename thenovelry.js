@@ -2,62 +2,76 @@
 
 <!-- Hero Quote Carousel -->   
 
-const heroQuoteSwiper = new Swiper(".hero-quote-carousel", {
-  direction: "horizontal",
-  slidesPerView: 1,
-  spaceBetween: 16,
-  threshold: 20,
-  speed: 300,
+document.addEventListener('DOMContentLoaded', () => {
+  const root = document.querySelector('.hero-quote-carousel');
+  if (!root) return;
 
-  autoplay: {
-    delay: 4000,
-    disableOnInteraction: false,
-    pauseOnMouseEnter: false
-  },
+  // Scope everything to the component to avoid ID collisions
+  const nextBtn = root.querySelector('#hero-quote-carousel_button-next');
+  const prevBtn = root.querySelector('#hero-quote-carousel_button-prev');
+  const paginationEl = root.querySelector('.swiper-pagination');
+  const scrollbarEl = root.querySelector('#hero-quote-carousel_scrollbar');
 
-  navigation: {
-    nextEl: "#hero-quote-carousel_button-next",
-    prevEl: "#hero-quote-carousel_button-prev"
-  },
+  // Build modules only if their elements exist (prevents init errors at tablet)
+  const config = {
+    direction: 'horizontal',
+    slidesPerView: 1,
+    spaceBetween: 16,
+    threshold: 20,
+    speed: 300,
+    autoplay: {
+      delay: 4000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: false
+    },
+    observer: true,          // watch for size/visibility changes
+    observeParents: true,
+    watchOverflow: true,     // disables if only 1 slide after layout changes
+  };
 
-  pagination: {
-    el: ".swiper-pagination",
-    type: "progressbar"
-  },
-
-  scrollbar: {
-    el: "#hero-quote-carousel_scrollbar",
-    draggable: true
+  if (nextBtn && prevBtn) {
+    config.navigation = { nextEl: nextBtn, prevEl: prevBtn };
   }
-});
+  if (paginationEl) {
+    config.pagination = { el: paginationEl, type: 'progressbar' };
+  }
+  if (scrollbarEl) {
+    config.scrollbar = { el: scrollbarEl, draggable: true };
+  }
 
-// Autoplay only when in viewport
-const heroSwiperEl = document.querySelector(".hero-quote-carousel");
+  // Optional: disable features that don't exist at tablet via breakpoints
+  config.breakpoints = {
+    0: {
+      // if you hide the scrollbar on mobile/tablet, keep Swiper happy:
+      scrollbar: scrollbarEl ? { el: scrollbarEl, draggable: true, enabled: false } : undefined
+    },
+    992: {
+      scrollbar: scrollbarEl ? { el: scrollbarEl, draggable: true, enabled: true } : undefined
+    }
+  };
 
-if (heroSwiperEl) {
+  const heroQuoteSwiper = new Swiper(root, config);
+
+  // Autoplay only when in viewport
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          heroQuoteSwiper.autoplay.start();
-        } else {
-          heroQuoteSwiper.autoplay.stop();
-        }
+        if (entry.isIntersecting) heroQuoteSwiper.autoplay.start();
+        else heroQuoteSwiper.autoplay.stop();
       });
     },
-    {
-      threshold: 0.3 // start autoplay when 30% of the slider is visible
-    }
+    { threshold: 0.3 }
   );
+  observer.observe(root);
 
-  observer.observe(heroSwiperEl);
-
-  // Optional: stop autoplay immediately if off-screen on load
-  const rect = heroSwiperEl.getBoundingClientRect();
-  const inView =
-    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
+  // If it starts off-screen at tablet, stop autoplay immediately
+  const rect = root.getBoundingClientRect();
+  const inView = rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3;
   if (!inView) heroQuoteSwiper.autoplay.stop();
-}
+
+  // If Webflow interactions toggle visibility at tablet, this helps:
+  window.addEventListener('resize', () => heroQuoteSwiper.update());
+});
 
 <!-- Editor Carousel (Team Preview) --> 
   
