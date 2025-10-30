@@ -2,61 +2,62 @@
 
 <!-- Hero Quote Carousel -->   
 
-document.addEventListener('DOMContentLoaded', () => {
-  const root = document.querySelector('.hero-quote-carousel');
-  if (!root) return;
+const heroQuoteSwiper = new Swiper(".hero-quote-carousel", {
+  direction: "horizontal",
+  slidesPerView: 1,
+  spaceBetween: 16,
+  threshold: 20,
+  speed: 300,
 
-  // Prefer global IDs (typical Webflow structure), fallback to inside root
-  const nextBtn = document.getElementById('hero-quote-carousel_button-next') || root.querySelector('#hero-quote-carousel_button-next');
-  const prevBtn = document.getElementById('hero-quote-carousel_button-prev') || root.querySelector('#hero-quote-carousel_button-prev');
-  const paginationEl =
-    document.querySelector('.hero-quote-carousel .swiper-pagination') ||
-    root.querySelector('.swiper-pagination') ||
-    document.querySelector('.swiper-pagination'); // final fallback
-  const scrollbarEl = document.getElementById('hero-quote-carousel_scrollbar') || root.querySelector('#hero-quote-carousel_scrollbar');
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: false
+  },
 
-  const config = {
-    direction: 'horizontal',
-    slidesPerView: 1,
-    spaceBetween: 16,
-    threshold: 20,
-    speed: 300,
-    autoplay: {
-      delay: 4000,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: false
-    },
-    observer: true,
-    observeParents: true,
-    watchOverflow: true
-  };
+  navigation: {
+    nextEl: "#hero-quote-carousel_button-next",
+    prevEl: "#hero-quote-carousel_button-prev"
+  },
 
-  if (nextBtn && prevBtn) config.navigation = { nextEl: nextBtn, prevEl: prevBtn };
-  if (paginationEl) config.pagination = { el: paginationEl, type: 'progressbar' };
-  if (scrollbarEl) config.scrollbar = { el: scrollbarEl, draggable: true };
+  pagination: {
+    el: ".swiper-pagination",
+    type: "progressbar"
+  },
 
-  const heroQuoteSwiper = new Swiper(root, config);
+  scrollbar: {
+    el: "#hero-quote-carousel_scrollbar",
+    draggable: true
+  }
+});
 
-  // Autoplay only when in viewport
-  const io = new IntersectionObserver(
+// Autoplay only when in viewport
+const heroSwiperEl = document.querySelector(".hero-quote-carousel");
+
+if (heroSwiperEl) {
+  const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) heroQuoteSwiper.autoplay.start();
-        else heroQuoteSwiper.autoplay.stop();
+        if (entry.isIntersecting) {
+          heroQuoteSwiper.autoplay.start();
+        } else {
+          heroQuoteSwiper.autoplay.stop();
+        }
       });
     },
-    { threshold: 0.3 }
+    {
+      threshold: 0.3 // start autoplay when 30% of the slider is visible
+    }
   );
-  io.observe(root);
 
-  // Stop autoplay immediately if off-screen on load
-  const r = root.getBoundingClientRect();
-  const inView = r.top < window.innerHeight * 0.7 && r.bottom > window.innerHeight * 0.3;
+  observer.observe(heroSwiperEl);
+
+  // Optional: stop autoplay immediately if off-screen on load
+  const rect = heroSwiperEl.getBoundingClientRect();
+  const inView =
+    rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
   if (!inView) heroQuoteSwiper.autoplay.stop();
-
-  // In case Webflow interactions toggle visibility
-  window.addEventListener('resize', () => heroQuoteSwiper.update());
-});
+}
 
 <!-- Editor Carousel (Team Preview) --> 
   
