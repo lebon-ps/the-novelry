@@ -6,13 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const root = document.querySelector('.hero-quote-carousel');
   if (!root) return;
 
-  // Scope everything to the component to avoid ID collisions
-  const nextBtn = root.querySelector('#hero-quote-carousel_button-next');
-  const prevBtn = root.querySelector('#hero-quote-carousel_button-prev');
-  const paginationEl = root.querySelector('.swiper-pagination');
-  const scrollbarEl = root.querySelector('#hero-quote-carousel_scrollbar');
+  // Prefer global IDs (typical Webflow structure), fallback to inside root
+  const nextBtn = document.getElementById('hero-quote-carousel_button-next') || root.querySelector('#hero-quote-carousel_button-next');
+  const prevBtn = document.getElementById('hero-quote-carousel_button-prev') || root.querySelector('#hero-quote-carousel_button-prev');
+  const paginationEl =
+    document.querySelector('.hero-quote-carousel .swiper-pagination') ||
+    root.querySelector('.swiper-pagination') ||
+    document.querySelector('.swiper-pagination'); // final fallback
+  const scrollbarEl = document.getElementById('hero-quote-carousel_scrollbar') || root.querySelector('#hero-quote-carousel_scrollbar');
 
-  // Build modules only if their elements exist (prevents init errors at tablet)
   const config = {
     direction: 'horizontal',
     slidesPerView: 1,
@@ -24,36 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
       disableOnInteraction: false,
       pauseOnMouseEnter: false
     },
-    observer: true,          // watch for size/visibility changes
+    observer: true,
     observeParents: true,
-    watchOverflow: true,     // disables if only 1 slide after layout changes
+    watchOverflow: true
   };
 
-  if (nextBtn && prevBtn) {
-    config.navigation = { nextEl: nextBtn, prevEl: prevBtn };
-  }
-  if (paginationEl) {
-    config.pagination = { el: paginationEl, type: 'progressbar' };
-  }
-  if (scrollbarEl) {
-    config.scrollbar = { el: scrollbarEl, draggable: true };
-  }
-
-  // Optional: disable features that don't exist at tablet via breakpoints
-  config.breakpoints = {
-    0: {
-      // if you hide the scrollbar on mobile/tablet, keep Swiper happy:
-      scrollbar: scrollbarEl ? { el: scrollbarEl, draggable: true, enabled: false } : undefined
-    },
-    992: {
-      scrollbar: scrollbarEl ? { el: scrollbarEl, draggable: true, enabled: true } : undefined
-    }
-  };
+  if (nextBtn && prevBtn) config.navigation = { nextEl: nextBtn, prevEl: prevBtn };
+  if (paginationEl) config.pagination = { el: paginationEl, type: 'progressbar' };
+  if (scrollbarEl) config.scrollbar = { el: scrollbarEl, draggable: true };
 
   const heroQuoteSwiper = new Swiper(root, config);
 
   // Autoplay only when in viewport
-  const observer = new IntersectionObserver(
+  const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) heroQuoteSwiper.autoplay.start();
@@ -62,14 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     { threshold: 0.3 }
   );
-  observer.observe(root);
+  io.observe(root);
 
-  // If it starts off-screen at tablet, stop autoplay immediately
-  const rect = root.getBoundingClientRect();
-  const inView = rect.top < window.innerHeight * 0.7 && rect.bottom > window.innerHeight * 0.3;
+  // Stop autoplay immediately if off-screen on load
+  const r = root.getBoundingClientRect();
+  const inView = r.top < window.innerHeight * 0.7 && r.bottom > window.innerHeight * 0.3;
   if (!inView) heroQuoteSwiper.autoplay.stop();
 
-  // If Webflow interactions toggle visibility at tablet, this helps:
+  // In case Webflow interactions toggle visibility
   window.addEventListener('resize', () => heroQuoteSwiper.update());
 });
 
