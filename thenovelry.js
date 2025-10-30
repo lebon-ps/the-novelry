@@ -28,6 +28,15 @@ const heroQuoteSwiper = new Swiper(".hero-quote-carousel", {
   scrollbar: {
     el: "#hero-quote-carousel_scrollbar",
     draggable: true
+  },
+
+  // Responsive breakpoints (always 1 slide)
+  breakpoints: {
+    320:  { slidesPerView: 1 },
+    580:  { slidesPerView: 1 },
+    768:  { slidesPerView: 1 },
+    992:  { slidesPerView: 1 },
+    1200: { slidesPerView: 1 }
   }
 });
 
@@ -45,14 +54,12 @@ if (heroSwiperEl) {
         }
       });
     },
-    {
-      threshold: 0.3 // start autoplay when 30% of the slider is visible
-    }
+    { threshold: 0.3 }
   );
 
   observer.observe(heroSwiperEl);
 
-  // Optional: stop autoplay immediately if off-screen on load
+  // Stop autoplay immediately if off-screen on load
   const rect = heroSwiperEl.getBoundingClientRect();
   const inView =
     rect.top < window.innerHeight * (1 - 0.3) && rect.bottom > window.innerHeight * 0.3;
